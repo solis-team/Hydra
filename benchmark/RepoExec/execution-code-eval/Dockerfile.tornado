@@ -1,0 +1,15 @@
+FROM codeeval-runner
+
+RUN apt-get update && apt-get install -y build-essential libcurl4-openssl-dev libssl-dev python3-dev
+
+RUN pip install --upgrade pip
+
+RUN pip install docutils==0.18.1
+RUN pip install cffi==1.15.1
+RUN pip install idna==3.4
+RUN pip install sphinx_rtd_theme==1.2.2
+
+RUN pip install aiopg==1.4.0 colorama==0.4.6 Markdown==3.4.4 psycopg2-binary==2.9.10 pycares==4.3.0 setuptools==61.2.0 typing_extensions==4.7.1 twisted==24.11.0
+RUN pip install pycurl==7.45.2 python_bcrypt==0.3.2
+
+CMD ["tail", "-f", "/dev/null"]

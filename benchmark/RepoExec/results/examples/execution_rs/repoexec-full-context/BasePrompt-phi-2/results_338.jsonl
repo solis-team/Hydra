@@ -1,0 +1,10 @@
+{"task_id": 338, "prediction_id": 0, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}
+{"task_id": 338, "prediction_id": 1, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}
+{"task_id": 338, "prediction_id": 2, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}
+{"task_id": 338, "prediction_id": 3, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}
+{"task_id": 338, "prediction_id": 4, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}
+{"task_id": 338, "prediction_id": 5, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}
+{"task_id": 338, "prediction_id": 6, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}
+{"task_id": 338, "prediction_id": 7, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}
+{"task_id": 338, "prediction_id": 8, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}
+{"task_id": 338, "prediction_id": 9, "generation": "def ceil_div(a: int, b: int) -> int:\n    r\"\"\"Integer division that rounds up.\"\"\"\n    return -(-a // b)\n\n", "message": "passed", "passed": true}

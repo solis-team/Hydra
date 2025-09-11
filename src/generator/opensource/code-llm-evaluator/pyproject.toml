@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "code_eval"
+version = "0.0.1"
+authors = [
+  { name="Dung Manh Nguyen", email="dungnm.workspace@gmail.com" },
+]
+description = "Easy evaluate CodeLLMs with fast inference settings"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "transformers>=4.39.0",
+    "datasets>=2.17.1",
+    "accelerate>=0.27.2",
+    "deepspeed>=0.13.2",
+    "peft>=0.10.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/FSoft-AI4Code/code-llm-evaluator"
+"Bug Tracker" = "https://github.com/FSoft-AI4Code/code-llm-evaluator/issues"
+
+[project.scripts]
+code-eval = "code_eval.__main__:main"
