@@ -1,4 +1,4 @@
-# HyDra: Hybrid Dependency-Aware Repository-level Code Generation
+# Hydra
 
 This repository contains the replication package of the paper **"Do Not Treat Code as Natural Language: Implications for Repository-Level Code Generation and Beyond"**.
 
@@ -6,7 +6,7 @@ This repository contains the replication package of the paper **"Do Not Treat Co
 
 Large language models for code (CodeLLMs) have demonstrated remarkable success in standalone code completion and generation, yet their effectiveness diminishes in repository-level settings where cross-file dependencies and structural context are essential. Existing Retrieval-Augmented Generation (RAG) approaches often borrow strategies from NLP, relying on chunking-based indexing and similarity-based retrieval that overlook structural relationships and miss functionally relevant dependencies.
 
-We present **HyDra**, a repository-level code generation framework that treats code as structured code rather than natural language. Our approach introduces: (i) structure-aware indexing that preserves code structure and dependencies, (ii) a lightweight dependency-aware retriever (DAR) that identifies true dependencies, and (iii) hybrid retrieval combining dependency-aware and similarity-based methods.
+We present **Hydra**, a repository-level code generation framework that treats code as structured code rather than natural language. Our approach introduces: (i) structure-aware indexing that preserves code structure and dependencies, (ii) a lightweight dependency-aware retriever (DAR) that identifies true dependencies, and (iii) hybrid retrieval combining dependency-aware and similarity-based methods.
 
 Extensive experiments on DevEval and RepoExec benchmarks show that HyDra achieves state-of-the-art performance, surpassing the strongest baseline by over 5% in Pass@1 and enabling smaller models to match larger ones.
 
