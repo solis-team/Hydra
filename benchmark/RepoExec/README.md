@@ -314,11 +314,5 @@ This codebase is adapted from:
 - [bigcode-evaluation-harness](https://github.com/bigcode-project/bigcode-evaluation-harness/tree/main)
 - [HumanEval](https://github.com/openai/human-eval)
 
-# Contact us
-If you have any questions, comments or suggestions, please do not hesitate to contact us.
-- Website: [fpt-aicenter](https://www.fpt-aicenter.com/ai-residency/)
-- Email: support.ailab@fpt.com
-- Corresponding Author: namlh@soict.hust.edu.vn
-
 # License
 [MIT License](LICENSE)
