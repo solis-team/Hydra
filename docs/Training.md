@@ -60,7 +60,7 @@ In our research, we use the downsampled version (`train_downsampling.jsonl`) by 
 For experimental reproduction, you should use the pre-constructed dataset:
 
 ```bash
-unzip data/hydra-dataset.zip -d data/hydra-dataset
+data/hydra-dataset
 ```
 
 Each sample follows the format:
@@ -164,11 +164,9 @@ Our training pipeline employs comprehensive evaluation metrics:
 from src.retriever.DAR.training.model import CustomCodeClassifier
 from transformers import AutoTokenizer
 
-# Load trained model
 model = CustomCodeClassifier.from_pretrained("outputs/dar_model")
 tokenizer = AutoTokenizer.from_pretrained("outputs/dar_model")
 
-# Inference example
 inputs = tokenizer("sample_text", return_tensors="pt")
 outputs = model(**inputs)
 predictions = outputs.logits.argmax(dim=-1)
