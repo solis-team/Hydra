@@ -87,7 +87,7 @@ if __name__ == "__main__":
     task = Benchmark(task_name=task_name, dataset_path=data_path, system_prompt=system_prompt,
                model_name=opt.model)
 
-    save_dir = "data/generation"
+    save_dir =f"data/generation/{opt.task_name}"
     os.makedirs(save_dir, exist_ok=True)
     evaluator = Evaluator(task=task,
                         model_name=opt.model,

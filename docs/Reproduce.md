@@ -51,6 +51,7 @@ The training guide covers:
 
 
 ## Research Questions Reproduction
+**Note:** This section describes only how to construct context, retrieve necessary entities, and create prompts. For code generation, please refer to [Code Generation](#code-generation).
 
 ### RQ1: Structure-Aware vs Chunking-Based Indexing
 
@@ -104,7 +105,7 @@ bash src/retriever/create_prompt.sh --benchmark <RepoExec|DevEval> --context str
 bash src/retriever/create_prompt.sh --benchmark <RepoExec|DevEval> --context structured --retriever dar
 ```
 
-#### Hybrid Retriever
+#### Hydra (Hybrid Retriever)
 ```bash
 bash src/retriever/create_prompt.sh --benchmark <RepoExec|DevEval> --context structured --retriever hybrid
 ```
@@ -113,17 +114,11 @@ bash src/retriever/create_prompt.sh --benchmark <RepoExec|DevEval> --context str
 
 **Research Question**: *How effective is our method compared to existing state-of-the-art approaches for repository-level code generation?*
 
-#### Our Method (Hybrid Retriever)
-Our proposed method combines multiple retrieval strategies:
+#### Hydra Retriever
+
+To measure the time latency of Hydra, first run the following command to perform retrieval and prompt processing:
 ```bash
 bash src/retriever/create_prompt.sh --benchmark <RepoExec|DevEval> --context structured --retriever hybrid
-```
-
-
-### Generated Prompts
-All prompt generation results are saved to:
-```
-data/prompt/<benchmark>_prompt.jsonl
 ```
 
 #### Baseline Comparisons
@@ -162,23 +157,8 @@ This workflow automatically embeds `time.perf_counter()` measurements during the
 
 #### Baseline Methods - Latency Measurement
 
-For state-of-the-art baseline comparisons, researchers should instrument their retrieval implementations with timing measurements:
+For state-of-the-art baseline reproduction comparisons, instrument the retrieval implementations for each baseline listed under **Baseline Comparisons** in RQ3 with timing measurements. Insert `time.perf_counter()` calls around the retrieval operations in the official implementations of RepoCoder, RLCoder, and RepoFormer to capture latency statistics. 
 
-**Required Implementation**: Insert `time.perf_counter()` calls around retrieval operations in baseline methods to capture computational costs:
-
-#### Comprehensive Analysis Workflow
-
-**Step 1: Generate Prompts with Latency Capture**
-```bash
-bash src/retriever/create_prompt.sh --benchmark RepoExec --context structured --retriever hybrid
-bash src/retriever/create_prompt.sh --benchmark DevEval --context structured --retriever hybrid
-```
-
-**Step 2: Analyze Computational Performance**
-```bash
-python src/retriever/compute_latency.py --benchmark RepoExec
-python src/retriever/compute_latency.py --benchmark DevEval
-```
 
 #### Performance Metrics Reported
 
@@ -193,12 +173,13 @@ The analysis provides detailed performance characteristics:
 
 ### Generation Pipeline Overview
 
-Our code generation pipeline supports two distinct approaches: **opensource** models using local inference and **closedsource** models via API endpoints. Each approach is optimized for different deployment scenarios and research requirements.
+Our code generation pipeline supports two distinct approaches: **opensource** models using local inference and **closedsource** models via API endpoints. 
 
 ### Opensource Generation
 
 #### Framework Integration
-For opensource model evaluation, we adapt the [**code-llm-evaluator**](https://github.com/FSoft-AI4Code/code-llm-evaluator) framework with modification.
+
+For opensource model evaluation, we adapt the [**code-llm-evaluator**](https://github.com/FSoft-AI4Code/code-llm-evaluator) framework with modifications. To begin, install the required dependencies as outlined in `src/generator/opensource/code-llm-evaluator/README.rst`.
 
 
 #### Opensource Generation Command
@@ -207,7 +188,6 @@ cd src/generator/opensource
 
 python generate.py \
   --model <model_path_or_name> \
-  --split <benchmark_split> \
   --data <dataset_path> \
   --task_name <RepoExec|DevEval> \
   --max_tokens 2048 \
@@ -229,16 +209,6 @@ python generate.py \
 
 **Note**: Outputs are automatically saved to the standardized location `data/generation/<benchmark>/<benchmark>.final.generated.jsonl`
 
-**Example Execution:**
-```bash
-python generate.py \
-  --model Qwen/Qwen2.5-Coder-7B-Instruct \
-  --split deveval_hybrid \
-  --data data/prompt/DevEval_prompt.jsonl \
-  --task_name DevEval \
-  --max_tokens 2048
-```
-
 
 ### Closedsource Generation
 
@@ -247,8 +217,7 @@ For closedsource models (GPT-4, Claude, etc.), configure the following environme
 
 ```bash
 export OPENAI_API_KEY="your_api_key_here"
-export OPENAI_BASE_URL="your-base-url"  
-export OPENAI_MODEL="your-model-name"      
+export OPENAI_BASE_URL="your-base-url"       
 ```
 
 #### Closedsource Generation Command
@@ -257,18 +226,8 @@ cd src/generator/closedsource
 
 python generate.py \
   --benchmark <RepoExec|DevEval> \
-  --input_file <prompt_dataset_path> \
-  --output_file <generation_output_path> \
   --model_name gpt-4.1-mini-2025-04-14 \
-  --max_tokens 2048 \
-  --temperature 0.2
 ```
-
-**Example Execution:**
-```bash
-python generate.py --benchmark DevEval
-```
-
 
 ### Generation Output Locations
 
