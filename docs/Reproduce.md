@@ -198,9 +198,7 @@ Our code generation pipeline supports two distinct approaches: **opensource** mo
 ### Opensource Generation
 
 #### Framework Integration
-For opensource model evaluation, we utilize the **code-llm-evaluator** framework developed by:
-- **Author**: Dung Manh Nguyen (email: dungnm.workspace@gmail.com)
-- **Repository**: https://github.com/FSoft-AI4Code/code-llm-evaluator
+For opensource model evaluation, we adapt the [**code-llm-evaluator**](https://github.com/FSoft-AI4Code/code-llm-evaluator) framework with modification.
 
 
 #### Opensource Generation Command
@@ -266,7 +264,6 @@ python generate.py \
   --temperature 0.2
 ```
 
-**Example Execution:**
 **Example Execution:**
 ```bash
 python generate.py --benchmark DevEval
