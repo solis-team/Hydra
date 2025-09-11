@@ -49,7 +49,6 @@ The training guide covers:
 - Evaluation metrics and model selection
 - Hardware requirements and optimization
 
-## Research Questions Reproduction
 
 ## Research Questions Reproduction
 
