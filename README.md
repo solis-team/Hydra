@@ -26,7 +26,7 @@ Create a new conda environment and install dependencies:
 
 ```bash
 # Create conda environment
-conda create -n hydra python=3.12
+conda create -n hydra python=3.10.0
 conda activate hydra
 
 # Install required packages
