@@ -283,12 +283,12 @@ After generating outputs using either opensource or closedsource approaches, you
 
 ### RepoExec Evaluation
 For RepoExec benchmark evaluation and metrics calculation, refer to:
-[**`benchmark/RepoExec/README.md`**](benchmark/RepoExec/README.md)
+[**`benchmark/RepoExec/README.md`**](../benchmark/RepoExec/README.md)
 
 
 ### DevEval Evaluation  
 For DevEval benchmark evaluation and metrics calculation, refer to:
-[**`benchmark/DevEval/README.md`**](benchmark/DevEval/README.md)
+[**`benchmark/DevEval/README.md`**](../benchmark/DevEval/README.md)
 
 
 
