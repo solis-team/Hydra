@@ -230,7 +230,6 @@ def check_correctness(args, data):
                 with open(completion_path, 'r', encoding='utf-8') as f:
                     restored_content = f.read()
                 if restored_content != original_content:
-                    print(f"WARNING: File {completion_path} was not properly restored!")
                     with open(completion_path, 'w', encoding='utf-8') as f:
                         f.write(original_content)
             except Exception as verify_e:

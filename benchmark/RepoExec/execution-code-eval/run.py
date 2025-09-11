@@ -3,10 +3,10 @@ import argparse
 
 
 argument_parser = argparse.ArgumentParser()
-argument_parser.add_argument('--gendir', help='Raw Gen folder', type=str, default="data/generation/RepoExec")
+argument_parser.add_argument('--gendir', help='Raw Gen folder', type=str, default="../../../data/generation/RepoExec")
 
 scripts = [
-    r"process-result.py",
+    r"process_result.py",
     r"execute.py",
     r"passk.py",
     r"getdir.py"]

@@ -128,7 +128,7 @@ def retrieve_unixcoder(example, top_k=10):
 # ================================================================================
 
 def create_prompt_with_unixcoder_chunking_context(example, input_dir = "cache/test-gen-repository/window", imported_context=True, benchmark="RepoExec"):
-    def format_prompt(windows_path, current_fpath, query, input_fpath_tuple, import_file_tuples, output_path=None, imported_context=imported_context):
+    def format_prompt(windows_path, current_fpath, query, input_fpath_tuple, import_file_tuples, output_path=None, imported_context=imported_context, t_f_p=None):
         input_module = sep.join(input_fpath_tuple)
         updated_samples = []
         anchor_text = query
@@ -235,7 +235,7 @@ def create_prompt_with_unixcoder_chunking_context(example, input_dir = "cache/te
             prompt_elements.append(sample['context'])
             prompt_elements.append("")    
         prompt_elements.append("Based on the information above, please complete the function in the current file:")
-        prompt_elements.append(anchor_text)
+        prompt_elements.append(t_f_p)
         prompt = "\n".join(prompt_elements)
 
         if output_path:
@@ -249,11 +249,12 @@ def create_prompt_with_unixcoder_chunking_context(example, input_dir = "cache/te
         catergory = example["metadata"]["fpath_tuple"][0]
     id = example["metadata"]["id"]
     query = example["metadata"]["target_function_prompt"]
+    t_f_p = example["metadata"]["target_function_prompt"] if example["metadata"]["type"] == "function" else example["metadata"]["target_method_prompt"]
     import_file = example["import_file"]
     import_file_tuples = [file.split('/') for file in import_file]
     windows_path = f"{input_dir}/repos/{repo}_ws20_ss2.jsonl" if benchmark == "RepoExec" else f"{input_dir}/repos/{catergory}/{repo}_ws20_ss2.jsonl"
     current_fpath = f"{input_dir}/current-files/{id}_ws20_ss2.jsonl"
-    example["prompt"] = format_prompt(windows_path, current_fpath, query, input_fpath_tuple, import_file_tuples, None, imported_context)
+    example["prompt"] = format_prompt(windows_path, current_fpath, query, input_fpath_tuple, import_file_tuples, None, imported_context, t_f_p)
     return example
 
 def run_unixcoder_chunking(benchmark:str, imported_context:bool):

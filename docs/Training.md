@@ -46,29 +46,22 @@ This process:
 - Performs stratified splitting into training/validation/test sets
 - Creates balanced downsampled versions for class imbalance mitigation
 
-**Stage 3: Final Dataset (Hydra-Dataset)**
-The complete processing pipeline resulted in our final training dataset, packaged as `data/hydra-dataset.zip`. This dataset contains four files:
-- `train.jsonl`: Full training set (~80% of total samples)
-- `train_downsampling.jsonl`: Balanced training set for class imbalance mitigation
-- `valid.jsonl`: Validation set (~10% of total samples)  
-- `test.jsonl`: Test set (~10% of total samples)
-
-In our research, we use the downsampled version (`train_downsampling.jsonl`) by default to address class imbalance issues.
-
-### 1.2 Dataset Usage (Reproduction)
-
-For experimental reproduction, you should use the pre-constructed dataset:
-
-```bash
-data/hydra-dataset
-```
-
 Each sample follows the format:
 ```json
 {"text": "{\"name\": \"target_function\", \"description\": \"...\"}</s>{\"name\": \"context_component\", \"code\": \"...\"}", "label": 1}
 ```
 
 Where `label: 1` indicates relevant dependency and `label: 0` indicates noise.
+
+
+**Stage 3: Final Dataset (Hydra-Dataset)**
+The complete processing pipeline produced our final training dataset, available at `Hydra-2025/hydra` on Hugging Face. This dataset includes four splits:
+- `train`: Full training set (~80% of total samples)
+- `train_downsampling`: Balanced training set for class imbalance mitigation
+- `valid`: Validation set (~10% of total samples)  
+- `test`: Test set (~10% of total samples)
+
+In our research, we use the downsampled version (`train_downsampling`) by default to address class imbalance issues.
 
 ---
 
@@ -84,32 +77,48 @@ Our DAR model (`CustomCodeClassifier`) implements a binary classifier built upon
 
 ### 2.2 Training Configuration
 
-**Default Training Command (with downsampling):**
+**To reproduce the results, you need to use the default training command (with downsampling):**
 ```bash
 python src/retriever/DAR/training/train.py \
-  --datasource local \
-  --data_dir data/hydra-dataset \
-  --downsample \
-  --model_dir outputs/dar_model
+  --datasource huggingface \
+  --huggingface_dataset_name Hydra-2025/hydra \
+  --downsample 
 ```
 
-This uses the default parameters from `train.py`:
+This uses the following updated default parameters from `train.py`:
+
+- `--datasource local`
+- `--data_dir data/hydra-dataset`
 - `--model_name_or_path microsoft/unixcoder-base`
-- `--num_train_epochs 2`
-- `--per_device_train_batch_size 8`
-- `--per_device_eval_batch_size 8`
-- `--learning_rate 2e-5`
-- `--weight_decay 0.01`
+- `--use_fast_tokenizer`
 - `--max_seq_length 512`
 - `--pad_to_max_length`
-- `--use_fast_tokenizer`
+- `--num_train_epochs 10`
+- `--per_device_train_batch_size 32`
+- `--per_device_eval_batch_size 32`
+- `--learning_rate 2e-5`
+- `--weight_decay 0.01`
+- `--gradient_accumulation_steps 16`
+- `--run_name dar-classification`
+- `--logging_steps 100`
+- `--seed 42`
 
-**Alternative: Full dataset training (without downsampling):**
+
+**Training Command (with local dataset):**
+
+You can also train with your own dataset
+
+```bash
+python src/retriever/DAR/training/train.py \
+  --datasource local \
+  --data_dir /path/to/your/dataset \
+  --downsample 
+```
 ```bash
 python src/retriever/DAR/training/train.py \
   --datasource local \
   --data_dir data/hydra-dataset \
-  --model_dir outputs/dar_model_full
+  --downsample 
 ```
 
 ### 2.3 Training Arguments Reference
@@ -137,16 +146,6 @@ python src/retriever/DAR/training/train.py \
 - `--use_fast_tokenizer`: Use optimized tokenizer implementation
 - `--seed`: Random seed for reproducibility (default: 42)
 
-### 2.4 GPU Training
-
-```bash
-CUDA_VISIBLE_DEVICES=X,X python src/retriever/DAR/training/train.py \
-  --datasource local \
-  --data_dir data/hydra-dataset \
-  --downsample \
-  --per_device_train_batch_size 4
-```
-
 ---
 
 ## 3. Evaluation and Model Selection
@@ -164,8 +163,8 @@ Our training pipeline employs comprehensive evaluation metrics:
 from src.retriever.DAR.training.model import CustomCodeClassifier
 from transformers import AutoTokenizer
 
-model = CustomCodeClassifier.from_pretrained("outputs/dar_model")
-tokenizer = AutoTokenizer.from_pretrained("outputs/dar_model")
+model = CustomCodeClassifier.from_pretrained("model")
+tokenizer = AutoTokenizer.from_pretrained("model")
 
 inputs = tokenizer("sample_text", return_tensors="pt")
 outputs = model(**inputs)

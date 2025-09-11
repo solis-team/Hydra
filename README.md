@@ -39,11 +39,7 @@ pip install -r requirements.txt
 
 1. **Extract benchmark data:**
    ```bash
-   mkdir data
    cd data
-   wget https://huggingface.co/datasets/Hydra-2025/hydra/resolve/main/hydra-dataset.zip
-   wget https://huggingface.co/datasets/Hydra-2025/hydra/resolve/main/temp.zip
-   unzip hydra-dataset.zip
    unzip temp.zip
    
    # Extract RepoExec benchmark

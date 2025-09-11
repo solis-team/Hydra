@@ -22,7 +22,7 @@ class Benchmark_Loader(ABC):
             output_dir: Directory to save processed files
         """
         self.graphs_base_dir = graphs_base_dir
-        self.output_dir = output_dir or "/home/brian-le/Documents/Career/BKAI/BKAI-RemoteRepo/ReFunc/data"
+        self.output_dir = output_dir or "data"
         os.makedirs(self.output_dir, exist_ok=True)
     
     def load_dependency_graph(self, graph_path: str) -> Dict[str, Any]:
@@ -214,12 +214,12 @@ class RepoExec_Loader(Benchmark_Loader):
     
     def extract_repo_name(self, project: str) -> str:
         """Extract repository name from project field."""
-        return project.split('/')[-1]
+        return project.split('/')[1]
     
     def construct_component_id(self, entry_point: str, module: str) -> str:
         """Construct component ID from entry_point and module."""
         module_path = module.replace('.', '/')
-        return f"{entry_point}@{module_path}.py"
+        return [f"{entry_point}@{module_path}.py", f"{entry_point}@src/{module_path}.py"]
     
     def load_dataset(self) -> datasets.Dataset:
         """Load RepoExec dataset from HuggingFace."""
@@ -246,17 +246,23 @@ class RepoExec_Loader(Benchmark_Loader):
             
             if not graph_path:
                 print(f"Warning: No dependency graph found for repo {repo_name}")
+                # print(project)
                 return None
-            
+
+            # print(graph_path)
+
             components = self.load_dependency_graph(graph_path)
             repo_dir = os.path.dirname(graph_path)
             external_knowledge = self.load_external_knowledge(repo_dir)
             
-            target_component_id = self.construct_component_id(entry_point, module)
-            
+            target_component_ids = self.construct_component_id(entry_point, module)
+            target_component_id = target_component_ids[0]
+
             if target_component_id not in components:
                 module_path = module.replace('.', '/') + '.py'
-                if module_path in components:
+                if target_component_ids[1] in components:
+                    target_component_id = target_component_ids[1]
+                elif module_path in components:
                     target_component_id = module_path
                 else:
                     print(f"Warning: Target component {target_component_id} not found in dependency graph")
@@ -285,7 +291,9 @@ class RepoExec_Loader(Benchmark_Loader):
             processed_sample = {
                 'id': task_id,
                 'target_function_prompt': target_function_prompt,
+                'target_method_prompt': " ",
                 'relative_path': target_relative_path,
+                "type": "function",
                 'candidate': candidate_dict,
                 'import_statements': import_statements
             }
@@ -325,17 +333,26 @@ class DevEval_Loader(Benchmark_Loader):
         """Extract repository name from project_path field."""
         return project_path.split('/')[-1]
     
-    def construct_component_id_from_namespace(self, namespace: str, completion_path: str) -> str:
-        """Construct component ID from namespace and completion_path."""        
-        function_name = namespace.split('.')[-1]
-        path_parts = completion_path.split('/')
-        if len(path_parts) >= 3:
-            relative_path = '/'.join(path_parts[2:])  
-        else:
-            relative_path = path_parts[-1]
-        
-        return f"{function_name}@{relative_path}"
-    
+    def construct_component_id_from_namespace(self, namespace: str, completion_path: str, sample_type: str) -> str:
+        """Construct component ID from namespace and completion_path."""  
+        if sample_type == "function":
+            function_name = namespace.split('.')[-1]
+            path_parts = completion_path.split('/')
+            if len(path_parts) >= 3:
+                relative_path = '/'.join(path_parts[2:])  
+            else:
+                relative_path = path_parts[-1]
+
+            return [f"{function_name}@{relative_path}", f"{function_name}@src/{relative_path}"]
+        elif sample_type == "method":
+            namespace_parts = namespace.split('.')
+            if len(namespace_parts) >= 2:
+                method_part = '.'.join(namespace_parts[-2:]) 
+                path_parts = namespace_parts[:-2] 
+                if path_parts:
+                    file_path = '/'.join(path_parts) + '.py'  
+                    init_path = '/'.join(path_parts) + '/__init__.py'
+            return [f"{method_part}@{file_path}", f"{method_part}@src/{file_path}", f"{method_part}@{init_path}", f"{method_part}@src/{init_path}"]
     def load_dataset(self) -> List[Dict[str, Any]]:
         """Load DevEval dataset from local JSONL file."""
         try:
@@ -369,8 +386,8 @@ class DevEval_Loader(Benchmark_Loader):
             sample_type = sample.get('type', '')
             project_path = sample.get('project_path', '')
             completion_path = sample.get('completion_path', '')
-            target_function_prompt = sample.get('target_function_prompt')
-            target_method_prompt = sample.get('target_method_prompt')
+            target_function_prompt = sample.get('target_function_prompt', '')
+            target_method_prompt = sample.get('target_method_prompt', '')
 
             task_id = namespace
             
@@ -389,15 +406,18 @@ class DevEval_Loader(Benchmark_Loader):
             repo_dir = os.path.dirname(graph_path)
             external_knowledge = self.load_external_knowledge(repo_dir)
             
-            target_component_id = self.construct_component_id_from_namespace(namespace, completion_path)
-            
-            if target_component_id not in components:
+            target_component_ids = self.construct_component_id_from_namespace(namespace, completion_path, sample_type)
+            if target_component_ids[0] in components:
+                target_component_id = target_component_ids[0]
+            if target_component_ids[0] not in components:
                 function_name = namespace.split('.')[-1]
                 relative_path = '/'.join(completion_path.split('/')[2:])
                 
                 possible_ids = [
-                    f"{function_name}@{relative_path}",
-                    target_component_id
+                    target_component_ids[1],
+                    target_component_ids[2],
+                    target_component_ids[3],
+                    f"{function_name}@{relative_path}"
                 ]
                 
                 found_component = None
@@ -409,6 +429,7 @@ class DevEval_Loader(Benchmark_Loader):
                 
                 if not found_component:
                     print(f"Warning: Target component not found for {namespace}")
+                    print(f"Checked IDs:", target_component_ids)
                     return None
             
             target_comp = components[target_component_id]
@@ -436,6 +457,7 @@ class DevEval_Loader(Benchmark_Loader):
                 'target_function_prompt': target_function_prompt,
                 'target_method_prompt': target_method_prompt,
                 'relative_path': target_relative_path,
+                'type': sample_type,
                 'candidate': candidate_dict,
                 'import_statements': import_statements
             }
@@ -480,8 +502,8 @@ def main():
     
     dataset = loader.load_dataset()
     
-    loader.process_dataset()
-    # loader.process_dataset(max_samples=5)
+    #loader.process_dataset()
+    loader.process_dataset(max_samples=2)
     
     print("\n" + "=" * 60)
     print("Pipeline completed successfully!")

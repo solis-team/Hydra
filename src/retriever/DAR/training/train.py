@@ -231,7 +231,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train DAR model")
     parser.add_argument("--datasource", choices=["local", "huggingface"], default="local",
                        help="Data source type")
-    parser.add_argument("--data_dir", type=str, help="Data directory (for local datasource)", default='/kaggle/input/test-train/data')
+    parser.add_argument("--data_dir", type=str, help="Data directory (for local datasource)", default='data/hydra-dataset')
     parser.add_argument("--huggingface_dataset_name", type=str, 
                        help="HuggingFace dataset name (for huggingface datasource)")
     parser.add_argument("--downsample", action="store_true", 
@@ -244,28 +244,28 @@ if __name__ == "__main__":
                        help="Maximum sequence length")
     parser.add_argument("--pad_to_max_length", action="store_true", default=True,
                        help="Pad sequences to maximum length")
-    parser.add_argument("--num_train_epochs", type=int, default=2,
+    parser.add_argument("--num_train_epochs", type=int, default=10,
                        help="Number of training epochs")
-    parser.add_argument("--per_device_train_batch_size", type=int, default=8,
+    parser.add_argument("--per_device_train_batch_size", type=int, default=32,
                        help="Training batch size per device")
-    parser.add_argument("--per_device_eval_batch_size", type=int, default=8,
+    parser.add_argument("--per_device_eval_batch_size", type=int, default=32,
                        help="Evaluation batch size per device")
     parser.add_argument("--learning_rate", type=float, default=2e-5,
                        help="Learning rate")
     parser.add_argument("--weight_decay", type=float, default=0.01,
                        help="Weight decay")
-    parser.add_argument("--gradient_accumulation_steps", type=int, default=1,
+    parser.add_argument("--gradient_accumulation_steps", type=int, default=16,
                        help="Number of gradient accumulation steps")
     parser.add_argument("--model_dir", type=str, default=None,
                        help="Model output directory (default: model)")
     parser.add_argument("--run_name", type=str, default="dar-classification",
                        help="Name for the training run")
-    parser.add_argument("--logging_steps", type=int, default=1,
+    parser.add_argument("--logging_steps", type=int, default=100,
                        help="Log every N steps")
     parser.add_argument("--seed", type=int, default=42,
                        help="Random seed")
     
-    args, _ = parser.parse_known_args()
+    args = parser.parse_args()
     
     if args.datasource == "local" and not args.data_dir:
         parser.error("--data_dir is required when using local datasource")

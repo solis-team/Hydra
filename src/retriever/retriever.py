@@ -55,6 +55,7 @@ def hybrid_retriever(example):
 def format_prompt(example, retriever_type):
     """Unified prompt formatting for all retriever types"""
     query = example['target_function_prompt']
+    component_type = example['type']
     current_file_path = example['relative_path']
     
     # Start timing
@@ -70,6 +71,8 @@ def format_prompt(example, retriever_type):
         results = hybrid_retriever(example)
     else:
         raise ValueError(f"Unknown retriever type: {retriever_type}")
+
+    # print(results)
     
     # End timing
     end_time = time.perf_counter()
@@ -110,7 +113,8 @@ def format_prompt(example, retriever_type):
                     prompt_elements.append("")
 
     prompt_elements.append("Based on the information above, please complete the function in the current file:")
-    prompt_elements.append(query)
+    t_f_p = example["target_function_prompt"] if component_type == "function" else example["target_method_prompt"]
+    prompt_elements.append(t_f_p)
 
     prompt = "\n".join(prompt_elements)
     return {

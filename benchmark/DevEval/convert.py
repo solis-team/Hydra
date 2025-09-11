@@ -180,7 +180,7 @@ def load_samples_from_data(data_file_path: str) -> dict[str, dict]:
 def convert_format_with_data_file(source_file_path: str, data_file_path: str, target_file_path: str):
     namespace_to_sample = load_samples_from_data(data_file_path)
     namespaces = list(namespace_to_sample.keys())
-    if not namespaces:
+    if not namespace_to_sample:
         return
     
     with open(source_file_path, 'r', encoding='utf-8') as f_source, \
@@ -194,7 +194,10 @@ def convert_format_with_data_file(source_file_path: str, data_file_path: str, ta
             if task_id is None:
                 continue
             
-            if task_id < len(namespaces):
+            if isinstance(task_id, str) and task_id in namespace_to_sample:
+                namespace = task_id
+                sample_data = namespace_to_sample[namespace]
+            elif isinstance(task_id, int) and 0 <= task_id < len(namespaces):
                 namespace = namespaces[task_id]
                 sample_data = namespace_to_sample[namespace]
             else:
@@ -214,7 +217,7 @@ def convert_format_with_data_file(source_file_path: str, data_file_path: str, ta
                 f_target.write('\n')
                 total_lines_written += 1
 
-        # print(f"Conversion complete! Written {total_lines_written} entries to {target_file_path}")
+        print(f"Conversion complete! Written {total_lines_written} entries to {target_file_path}")
 
 
 

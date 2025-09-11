@@ -308,8 +308,8 @@ def create_dataset(parser_output_dir: str, data_output_dir: str):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create DAR training dataset from parsed repositories")
     parser.add_argument("--parser_output", type=str, 
-                       default="/home/brian-le/Documents/Career/BKAI/BKAI-RemoteRepo/ReFunc/src/context_formulation/structured_indexer/parser_output",
-                       help="Directory containing parsed repository data (default: parser_output)")
+                       default=None,
+                       help="Directory containing parsed repository data")
     parser.add_argument("--data_output", type=str, 
                        default="data",
                        help="Directory to save train/valid/test data (default: data)")

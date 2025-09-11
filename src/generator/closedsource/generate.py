@@ -27,7 +27,6 @@ class Chatter:
         return self.__system_message
 
     def __configure_openai(self):
-        # Configure API key and base URL from environment. Model is supplied via constructor.
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
             logging.error("[Chatter] - Missing OPENAI_API_KEY environment variable")
@@ -72,7 +71,6 @@ def main():
     parser.add_argument("--model", required=True, help="OpenAI model name to use (e.g. 'gpt-4')")
     args = parser.parse_args()
 
-    # instantiate chatter with model passed as CLI argument instead of reading from env
     chatter = Chatter(system_message="You are a helpful coding assistant.", model_name=args.model)
 
     if args.benchmark == "RepoExec":

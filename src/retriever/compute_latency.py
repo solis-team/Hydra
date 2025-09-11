@@ -64,10 +64,10 @@ def print_latency_stats(stats, benchmark_name):
     print(f"Latency Statistics for {benchmark_name}")
     print(f"{'='*50}")
     print(f"Total samples: {stats['count']}")
-    print(f"Min latency:   {stats['min_ms']:.2f} ms ({stats['min_sec']:.6f} seconds)")
-    print(f"Max latency:   {stats['max_ms']:.2f} ms ({stats['max_sec']:.6f} seconds)")
-    print(f"Mean latency:  {stats['mean_ms']:.2f} ms ({stats['mean_sec']:.6f} seconds)")
-    print(f"Median latency: {stats['median_ms']:.2f} ms ({stats['median_sec']:.6f} seconds)")
+    print(f"Min latency:   {stats['min_ms']:.4f} ms ({stats['min_sec']:.8f} seconds)")
+    print(f"Max latency:   {stats['max_ms']:.4f} ms ({stats['max_sec']:.8f} seconds)")
+    print(f"Mean latency:  {stats['mean_ms']:.4f} ms ({stats['mean_sec']:.8f} seconds)")
+    print(f"Median latency: {stats['median_ms']:.4f} ms ({stats['median_sec']:.8f} seconds)")
     print(f"{'='*50}")
 
 
