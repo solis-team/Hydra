@@ -27,37 +27,48 @@ logger = logging.getLogger(__name__)
 
 
 class ModelCallback(TrainerCallback):
-    def __init__(self, model_dir):
+    def __init__(self, model_dir, tokenizer=None, config=None):
         self.model_dir = model_dir
         self.best_metric = -float('inf')
-        
-    def on_epoch_end(self, args, state, control, model=None, metrics=None, **kwargs):
-        if model is None or metrics is None:
+        self.tokenizer = tokenizer
+        self.config = config
+
+    def on_evaluate(self, args, state, control, metrics=None, **kwargs):
+        if metrics is None:
             return
-        
-        print(f"\nEpoch {int(state.epoch)} Metrics:")
-        print(f"Acc: {metrics.get('eval_accuracy', 0):.4f}")
-        print(f"Recall: {metrics.get('eval_recall', 0):.4f}")
-        print(f"Precision: {metrics.get('eval_precision', 0):.4f}")
-        print(f"RecallTrue: {metrics.get('eval_recall_true', 0):.4f}")
-        print(f"PrecisionTrue: {metrics.get('eval_precision_true', 0):.4f}")
-        print(f"F1True: {metrics.get('eval_f1_true', 0):.4f}")
-        print(f"RecallFalse: {metrics.get('eval_recall_false', 0):.4f}")
-        print(f"PrecisionFalse: {metrics.get('eval_precision_false', 0):.4f}")
-        print(f"F1False: {metrics.get('eval_f1_false', 0):.4f}")
-        
-        current_metric = metrics.get('eval_recall_true', 0)
+        model = kwargs.get("model")
+        if model is None:
+            return
+        if not state.is_local_process_zero:
+            return
+
+        logger.info(
+            "Eval metrics: Acc=%.4f RecallTrue=%.4f F1True=%.4f",
+            metrics.get("eval_accuracy", 0),
+            metrics.get("eval_recall_true", 0),
+            metrics.get("eval_f1_true", 0),
+        )
+
+        current_metric = metrics.get("eval_recall_true", 0)
         if current_metric > self.best_metric:
             self.best_metric = current_metric
-            model.save_pretrained(self.model_dir)
-            logger.info(f"New best model with RecallTrue {current_metric:.4f}")
+            best_model_dir = os.path.join(self.model_dir, "best_model")
+            os.makedirs(best_model_dir, exist_ok=True)
+            model.save_pretrained(best_model_dir)
+            if self.config is not None:
+                self.config.save_pretrained(best_model_dir)
+            if self.tokenizer is not None:
+                self.tokenizer.save_pretrained(best_model_dir)
+            logger.info("New best model with RecallTrue %.4f saved to %s", current_metric, best_model_dir)
 
 
 def save_final_model(model, tokenizer, config, model_dir, model_name_or_path, max_seq_length):
-    model.save_pretrained(model_dir)
-    model.config.save_pretrained(model_dir)
-    tokenizer.save_pretrained(model_dir)
-    logger.info(f"Final model saved: {model_dir}")
+    final_model_dir = os.path.join(model_dir, "final_model")
+    os.makedirs(final_model_dir, exist_ok=True)
+    model.save_pretrained(final_model_dir)
+    model.config.save_pretrained(final_model_dir)
+    tokenizer.save_pretrained(final_model_dir)
+    logger.info(f"Final model saved: {final_model_dir}")
 
 
 def run(datasource, 
@@ -189,8 +200,8 @@ def run(datasource,
         disable_tqdm=False,
     )
     
-    model_callback = ModelCallback(model_dir)
-    
+    model_callback = ModelCallback(model_dir, tokenizer=tokenizer, config=config)
+
     trainer = Trainer(
         model=model,
         args=training_args,

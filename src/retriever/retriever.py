@@ -10,7 +10,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 def dar_retriever(example):
-    model_dir = "model"
+    model_dir = "model/best_model"
     
     model = DARInferenceModel(model_dir)
     candidate = example['candidate']

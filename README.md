@@ -76,3 +76,18 @@ For detailed instructions and comprehensive guides, please refer to:
   - Code generation pipeline
   - Evaluation and metrics calculation
 
+
+## Citation
+
+If you found this repository to be useful, please cite:
+
+@misc{leanh2026treatcodenaturallanguage,
+      title={Do Not Treat Code as Natural Language: Implications for Repository-Level Code Generation and Beyond}, 
+      author={Minh Le-Anh and Huyen Nguyen and Khanh An Tran and Nam Le Hai and Linh Ngo Van and Nghi D. Q. Bui and Bach Le},
+      year={2026},
+      eprint={2602.11671},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE},
+      url={https://arxiv.org/abs/2602.11671}, 
+}
+

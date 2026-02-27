@@ -1,6 +1,6 @@
 import numpy as np
 import evaluate
-from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
+from sklearn.metrics import confusion_matrix, precision_recall_fscore_support, accuracy_score
 import random
 import os
 import torch
@@ -47,5 +47,3 @@ def compute_detailed_metrics(eval_pred):
         "precision_false": precision_false,
         "f1_false": f1_false
     }
-
-
