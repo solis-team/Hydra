@@ -81,6 +81,7 @@ For detailed instructions and comprehensive guides, please refer to:
 
 If you found this repository to be useful, please cite:
 
+```bibtex
 @misc{leanh2026treatcodenaturallanguage,
       title={Do Not Treat Code as Natural Language: Implications for Repository-Level Code Generation and Beyond}, 
       author={Minh Le-Anh and Huyen Nguyen and Khanh An Tran and Nam Le Hai and Linh Ngo Van and Nghi D. Q. Bui and Bach Le},
@@ -90,4 +91,4 @@ If you found this repository to be useful, please cite:
       primaryClass={cs.SE},
       url={https://arxiv.org/abs/2602.11671}, 
 }
-
+```
