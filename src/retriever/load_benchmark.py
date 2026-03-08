@@ -502,8 +502,8 @@ def main():
     
     dataset = loader.load_dataset()
     
-    #loader.process_dataset()
-    loader.process_dataset(max_samples=2)
+    loader.process_dataset()
+    # loader.process_dataset(max_samples=2)
     
     print("\n" + "=" * 60)
     print("Pipeline completed successfully!")
