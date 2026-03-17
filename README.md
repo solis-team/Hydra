@@ -1,4 +1,4 @@
-<h1 align="center">Hydra: Do Not Treat Code as Natural Language</h1>
+<h1 align="center">Do Not Treat Code as Natural Language: Implications for Repository-Level Code Generation and Beyond</h1>
 
 <p align="center">
   <strong>Repository-Level Code Generation</strong> • <strong>Structure-Aware Indexing</strong> • <strong>Dependency-Aware Retrieval</strong>
