@@ -16,7 +16,7 @@
   <a href="https://arxiv.org/abs/2602.11671"><strong>Paper</strong></a>
 </p>
 
-## DAR Model is now available at: https://huggingface.co/solis-soict/Hydra-DAR !
+## DAR Model is available at: https://huggingface.co/solis-soict/Hydra-DAR !
 
 ## Introduction
 
