@@ -18,8 +18,6 @@
   <a href="https://arxiv.org/abs/2602.11671"><strong>Paper</strong></a>
 </p>
 
-## DAR Model is available at: https://huggingface.co/solis-soict/Hydra-DAR !
-
 ## Introduction
 
 Large language models for code (CodeLLMs) have demonstrated remarkable success in standalone code completion and generation, yet their effectiveness diminishes in repository-level settings where cross-file dependencies and structural context are essential. Existing Retrieval-Augmented Generation (RAG) approaches often borrow strategies from NLP, relying on chunking-based indexing and similarity-based retrieval that overlook structural relationships and miss functionally relevant dependencies.
