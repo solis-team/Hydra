@@ -8,6 +8,8 @@
   <a href="https://python.org/"><img alt="Python version" src="https://img.shields.io/badge/python-3.10+-blue?style=flat-square" /></a>
   <a href="./LICENSE"><img alt="License: Apache 2.0" src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=flat-square" /></a>
   <a href="https://arxiv.org/abs/2602.11671"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2602.11671-b31b1b?style=flat-square" /></a>
+  <a href="https://huggingface.co/solis-soict/Hydra-DAR"><img alt="HF Model" src="https://img.shields.io/badge/Hugging%20Face-DAR_Model-yellow?logo=huggingface" /></a>
+  <a href="https://huggingface.co/datasets/solis-soict/Hydra-DAR-Dataset"><img alt="HF Data" src="https://img.shields.io/badge/Hugging%20Face-DAR_Dataset-yellow?logo=huggingface" /></a>
 </p>
 
 <p align="center">
