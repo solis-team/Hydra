@@ -105,7 +105,7 @@ Comparison of Hydra with prior retrieval-based approaches and no-context baselin
 | **Hydra** | **23.32** | **31.32** | **34.36** | **17.27** | **22.44** | **24.44** |
 
 ## Documentation
-**Important** Before reproducing experiments, you must first train the DAR (Dependency-Aware Retriever) model. 
+**Important** Before reproducing experiments, you must first train the DAR (Dependency-Aware Retriever) model or using our pretrained model at huggingface [DAR model](https://huggingface.co/solis-soict/Hydra-DAR). 
 
 For detailed instructions and comprehensive guides, please refer to:
 - **[Training.md](docs/Training.md)** - DAR (Dependency-Aware Retriever) training guide including:
