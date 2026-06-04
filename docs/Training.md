@@ -81,7 +81,7 @@ Our DAR model (`CustomCodeClassifier`) implements a binary classifier built upon
 ```bash
 python src/retriever/DAR/training/train.py \
   --datasource huggingface \
-  --huggingface_dataset_name Hydra-2025/hydra \
+  --huggingface_dataset_name solis-soict/Hydra-DAR-Dataset \
   --downsample 
 ```
 
