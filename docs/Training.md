@@ -55,7 +55,7 @@ Where `label: 1` indicates relevant dependency and `label: 0` indicates noise.
 
 
 **Stage 3: Final Dataset (Hydra-Dataset)**
-The complete processing pipeline produced our final training dataset, available at `Hydra-2025/hydra` on Hugging Face. This dataset includes four splits:
+The complete processing pipeline produced our final training dataset, available at `solis-soict/Hydra-DAR-Dataset` on Hugging Face. This dataset includes four splits:
 - `train`: Full training set (~80% of total samples)
 - `train_downsampling`: Balanced training set for class imbalance mitigation
 - `valid`: Validation set (~10% of total samples)  
